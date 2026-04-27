@@ -3,6 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 dotenv.config();
+console.log("ENV_CHECK_STARTUP", {
+  hasGemini: !!process.env.GEMINI_API_KEY,
+  hasGoogle: !!process.env.GOOGLE_API_KEY,
+  hasGeminiAlt: !!process.env.GEMINI_KEY
+});
 
 const app = express();
 app.use(cors());
