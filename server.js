@@ -21,10 +21,52 @@ app.get("/api/health", (req, res) => {
 app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body || {};
-
     if (!message || !message.trim()) {
       return res.status(400).json({ error: "Message is required" });
     }
+
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) {
+      return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
+    }
+
+    const url =
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${key}`;
+
+    const geminiRes = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: message }] }]
+      })
+    });
+
+    const data = await geminiRes.json();
+
+    // If Gemini returned error, send it to frontend
+    if (!geminiRes.ok) {
+      return res.status(geminiRes.status).json({
+        error: "Gemini API error",
+        details: data?.error?.message || "Unknown Gemini error"
+      });
+    }
+
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!reply) {
+      return res.status(500).json({
+        error: "No reply generated",
+        details: JSON.stringify(data)
+      });
+    }
+
+    return res.json({ reply });
+  } catch (err) {
+    return res.status(500).json({
+      error: "Chat API failed",
+      details: String(err)
+    });
+  }
+});
 
     const key = process.env.GEMINI_API_KEY;
     if (!key) {
