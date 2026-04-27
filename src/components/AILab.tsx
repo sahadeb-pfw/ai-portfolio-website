@@ -380,6 +380,7 @@ function SpeechToTextPanel() {
 
 /* ── AI Chatbot ── */
 function ChatbotPanel() {
+  const API = import.meta.env.VITE_API_BASE_URL;
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
     { role: 'ai', text: "Hello! 👋 I'm your AI assistant. Ask me anything about AI, prompt engineering, automation, or just chat!" },
   ]);
@@ -397,18 +398,37 @@ function ChatbotPanel() {
 
   const suggestions = ['What is Generative AI?', 'Best AI tools for beginners?', 'How to write better prompts?', 'AI automation tips'];
 
-  const send = (msg?: string) => {
-    const userMsg = msg || input;
-    if (!userMsg.trim()) return;
-    setInput('');
-    setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
-    setTyping(true);
-    setTimeout(() => {
-      const resp = demoResponses[Math.floor(Math.random() * demoResponses.length)];
-      setMessages(prev => [...prev, { role: 'ai', text: resp }]);
-      setTyping(false);
-    }, 1500);
-  };
+ const send = async () => {
+  if (!input.trim()) return;
+
+  const userMsg = input.trim();
+  setInput("");
+  setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
+  setTyping(true);
+
+  try {
+    const res = await fetch(`${API}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: userMsg })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data?.error || "Chat request failed");
+    }
+
+    setMessages((prev) => [...prev, { role: "ai", text: data.reply || "No reply received." }]);
+  } catch (e) {
+    setMessages((prev) => [
+      ...prev,
+      { role: "ai", text: "Sorry, chat server is busy. Please try again in a moment." }
+    ]);
+  } finally {
+    setTyping(false);
+  }
+};
 
   useEffect(() => {
     if (chatRef.current) {
