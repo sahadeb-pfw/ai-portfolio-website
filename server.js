@@ -14,8 +14,12 @@ app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-app.get("/api/health", (req, res) => {
-  res.json({ ok: true, message: "API is live" });
+app.get("/api/env-check", (req, res) => {
+  res.json({
+    hasGeminiApiKey: !!process.env.GEMINI_API_KEY,
+    hasGoogleApiKey: !!process.env.GOOGLE_API_KEY,
+    hasGeminiKey: !!process.env.GEMINI_KEY
+  });
 });
 
 app.post("/api/chat", async (req, res) => {
@@ -25,7 +29,10 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const key = process.env.GEMINI_API_KEY;
+    const key =
+  process.env.GEMINI_API_KEY ||
+  process.env.GOOGLE_API_KEY ||
+  process.env.GEMINI_KEY;
     if (!key) {
       return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
     }
