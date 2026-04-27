@@ -98,3 +98,25 @@ app.post("/api/chat", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+app.get("/api/chat-test", async (req, res) => {
+  try {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) return res.status(500).json({ error: "Missing GEMINI_API_KEY" });
+
+    const url =
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${key}`;
+
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: "Say hello in one line" }] }]
+      })
+    });
+
+    const data = await r.json();
+    return res.status(r.status).json(data);
+  } catch (e) {
+    return res.status(500).json({ error: String(e) });
+  }
+});
