@@ -34,10 +34,8 @@ app.post("/api/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const key =
-  process.env.GEMINI_API_KEY ||
   process.env.GOOGLE_API_KEY ||
-  process.env.GEMINI_KEY;
+  process.env.GEMINI_API_KEY;
     if (!key) {
       return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
     }
