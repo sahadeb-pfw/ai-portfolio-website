@@ -1324,7 +1324,7 @@ export default function AILab() {
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald ai-pulse-dot" />
                   <span className="text-text-muted text-[10px]">
-                    {activeToolData?.status === 'free' ? 'Browser-Powered — No API key required' : 'Demo Mode — Ready for API integration'}
+                    {activeToolData?.status === 'free' ? 'Browser-Powered — No API key required' : 'Live API Mode'}
                   </span>
                 </div>
                 <button onClick={closeTool} className="text-text-muted text-[10px] hover:text-text-secondary transition-colors">
