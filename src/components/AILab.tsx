@@ -380,13 +380,40 @@ function SpeechToTextPanel() {
 
 /* ── AI Chatbot ── */
 function ChatbotPanel() {
-  const API = import.meta.env.VITE_API_BASE_URL || "https://ai-portfolio-website-9z80.onrender.com";
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
-    { role: 'ai', text: "Hello! 👋 I'm your AI assistant. Ask me anything about AI, prompt engineering, automation, or just chat!" },
-  ]);
-  const [input, setInput] = useState('');
-  const [typing, setTyping] = useState(false);
-  const chatRef = useRef<HTMLDivElement>(null);
+  const API = import.meta.env.VITE_API_BASE_URL || 'https://ai-portfolio-website-9z80.onrender.com';
+
+const send = async () => {
+  if (!input.trim()) return;
+  const userMsg = input.trim();
+  setInput('');
+  setMessages((prev) => [...prev, { role: 'user', text: userMsg }]);
+  setTyping(true);
+
+  try {
+    const res = await fetch(`${API}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userMsg }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      const detail = data?.details || data?.error || `HTTP ${res.status}`;
+      setMessages((prev) => [...prev, { role: 'ai', text: `Server Error: ${detail}` }]);
+      return;
+    }
+
+    setMessages((prev) => [...prev, { role: 'ai', text: data.reply || 'No reply received.' }]);
+  } catch {
+    setMessages((prev) => [
+      ...prev,
+      { role: 'ai', text: 'Network Error: Could not reach backend. Try again in a moment.' },
+    ]);
+  } finally {
+    setTyping(false);
+  }
+};
 
   const demoResponses = [
     "That's a great question! Generative AI models like GPT-4 use transformer architectures to understand and generate human-like text. They're trained on vast datasets and can perform reasoning, creative writing, coding, and much more. 🧠",
