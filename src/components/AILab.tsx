@@ -381,181 +381,87 @@ function SpeechToTextPanel() {
 /* ── AI Chatbot ── */
 function ChatbotPanel() {
   const API = import.meta.env.VITE_API_BASE_URL || 'https://ai-portfolio-website-9z80.onrender.com';
+  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
+    { role: 'ai', text: "Hi! I'm Sahadeb's AI assistant. Ask me anything about AI, prompt engineering, or automation! 🤖" },
+  ]);
+  const [input, setInput] = useState('');
+  const [typing, setTyping] = useState(false);
 
-const send = async () => {
-  if (!input.trim()) return;
-  const userMsg = input.trim();
-  setInput('');
-  setMessages((prev) => [...prev, { role: 'user', text: userMsg }]);
-  setTyping(true);
+  const send = async () => {
+    if (!input.trim()) return;
 
-  try {
-    const res = await fetch(`${API}/api/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: userMsg }),
-    });
+    const userMsg = input.trim();
+    setInput('');
+    setMessages((prev) => [...prev, { role: 'user', text: userMsg }]);
+    setTyping(true);
 
-    const data = await res.json();
+    try {
+      const res = await fetch(`${API}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg }),
+      });
 
-    if (!res.ok) {
-      const detail = data?.details || data?.error || `HTTP ${res.status}`;
-      setMessages((prev) => [...prev, { role: 'ai', text: `Server Error: ${detail}` }]);
-      return;
-    }
+      const data = await res.json();
 
-    setMessages((prev) => [...prev, { role: 'ai', text: data.reply || 'No reply received.' }]);
-  } catch {
-    setMessages((prev) => [
-      ...prev,
-      { role: 'ai', text: 'Network Error: Could not reach backend. Try again in a moment.' },
-    ]);
-  } finally {
-    setTyping(false);
-  }
-};
+      if (!res.ok) {
+        const detail = data?.details || data?.error || `HTTP ${res.status}`;
+        setMessages((prev) => [...prev, { role: 'ai', text: `Server Error: ${detail}` }]);
+        return;
+      }
 
-  const demoResponses = [
-    "That's a great question! Generative AI models like GPT-4 use transformer architectures to understand and generate human-like text. They're trained on vast datasets and can perform reasoning, creative writing, coding, and much more. 🧠",
-    "Prompt engineering is the art of crafting instructions that guide AI to produce optimal outputs. Key techniques include being specific, providing examples, using system prompts, and iterative refinement. Start with clear context and build from there! ✨",
-    "AI automation involves using AI models to streamline repetitive tasks. This can include content generation, data analysis, email processing, customer support bots, and workflow orchestration with tools like n8n or Make.com. 🚀",
-    "I'd recommend starting with ChatGPT for text tasks, Midjourney for images, and n8n for workflow automation. Each has free tiers to experiment with. The key is to start small and gradually build more complex workflows! 💡",
-    "The field of AI is evolving rapidly. Some trends to watch: multimodal AI (text + image + audio), smaller more efficient models, AI agents that can take actions, and improved reasoning capabilities. Stay curious! 🌟",
-  ];
-
-  const suggestions = ['What is Generative AI?', 'Best AI tools for beginners?', 'How to write better prompts?', 'AI automation tips'];
-
- const send = async () => {
-  if (!input.trim()) return;
-
-  const userMsg = input.trim();
-  setInput("");
-  setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
-  setTyping(true);
-
-  try {
-    const res = await fetch(`${API}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMsg })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      const errText = data?.details || data?.error || `HTTP ${res.status}`;
+      setMessages((prev) => [...prev, { role: 'ai', text: data.reply || 'No reply received.' }]);
+    } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "ai", text: `Server Error: ${errText}` }
+        { role: 'ai', text: 'Network Error: Could not reach backend. Try again in a moment.' },
       ]);
-      return;
+    } finally {
+      setTyping(false);
     }
-
-    setMessages((prev) => [
-      ...prev,
-      { role: "ai", text: data.reply || "No reply received." }
-    ]);
-  } catch (e) {
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "ai",
-        text: "Network Error: Could not reach backend. Check API URL or CORS."
-      }
-    ]);
-  } finally {
-    setTyping(false);
-  }
-};
-
-  const userMsg = input.trim();
-  setInput("");
-  setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
-  setTyping(true);
-
-  try {
-    const res = await fetch(`${API}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: userMsg })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data?.error || "Chat request failed");
-    }
-
-    setMessages((prev) => [...prev, { role: "ai", text: data.reply || "No reply received." }]);
-  } catch (e) {
-    setMessages((prev) => [
-      ...prev,
-      { role: "ai", text: "Sorry, chat server is busy. Please try again in a moment." }
-    ]);
-  } finally {
-    setTyping(false);
-  }
-};
-
-  useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  }, [messages, typing]);
+  };
 
   return (
-    <div className="flex flex-col h-[450px]">
-      {/* Messages */}
-      <div ref={chatRef} className="flex-1 overflow-y-auto ai-chat-scroll space-y-3 mb-4 pr-1">
+    <div className="flex flex-col h-[400px]">
+      <div className="flex-1 overflow-y-auto space-y-3 mb-3 pr-1">
         {messages.map((msg, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`max-w-[85%] px-4 py-3 text-xs leading-relaxed ${
-              msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'
-            }`}>
+          <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+            <div
+              className={`max-w-[80%] px-4 py-2.5 text-xs leading-relaxed ${
+                msg.role === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'
+              }`}
+            >
               {msg.text}
             </div>
-          </motion.div>
+          </div>
         ))}
         {typing && (
           <div className="flex justify-start">
-            <div className="chat-bubble-ai px-4 py-3 flex gap-1.5">
-              {[0, 1, 2].map(i => (
-                <span key={i} className="w-2 h-2 rounded-full bg-text-muted animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
-              ))}
+            <div className="chat-bubble-ai px-4 py-2.5 flex gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-bounce" style={{ animationDelay: '0ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-bounce" style={{ animationDelay: '150ms' }} />
+              <span className="w-1.5 h-1.5 rounded-full bg-text-muted animate-bounce" style={{ animationDelay: '300ms' }} />
             </div>
           </div>
         )}
       </div>
 
-      {/* Suggestions */}
-      {messages.length <= 1 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {suggestions.map(s => (
-            <button key={s} onClick={() => send(s)} className="ai-pill text-[10px] hover:ai-pill-active">{s}</button>
-          ))}
-        </div>
-      )}
-
-      {/* Input */}
       <div className="flex gap-2">
         <input
           value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && send()}
-          placeholder="Type your message..."
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && send()}
+          placeholder="Type a message..."
           className="input-field flex-1 text-sm"
         />
-        <button onClick={() => send()} className="btn-ai !w-auto px-5 text-lg">↑</button>
+        <button onClick={send} className="btn-primary px-4">
+          ↑
+        </button>
       </div>
     </div>
   );
 }
-
+ 
 /* ── Prompt Improver ── */
 function PromptImproverPanel() {
   const [raw, setRaw] = useState('');
