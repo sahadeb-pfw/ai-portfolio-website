@@ -381,11 +381,23 @@ function SpeechToTextPanel() {
 /* ── AI Chatbot ── */
 function ChatbotPanel() {
   const API = import.meta.env.VITE_API_BASE_URL || 'https://ai-portfolio-website-9z80.onrender.com';
-  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([
-    { role: 'ai', text: "Hi! I'm Sahadeb's AI assistant. Ask me anything about AI, prompt engineering, or automation! 🤖" },
-  ]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>(() => {
+  const saved = localStorage.getItem('chat_messages');
+  if (saved) {
+    try {
+      return JSON.parse(saved);
+    } catch {
+      return [{ role: 'ai', text: "Hi! I'm Sahadeb's AI assistant. Ask me anything! 🤖" }];
+    }
+  }
+  return [{ role: 'ai', text: "Hi! I'm Sahadeb's AI assistant. Ask me anything! 🤖" }];
+});
   const [input, setInput] = useState('');
   const [typing, setTyping] = useState(false);
+  const [lastFailedMessage, setLastFailedMessage] = useState('');
+  useEffect(() => {
+  localStorage.setItem('chat_messages', JSON.stringify(messages));
+  }, [messages]); 
 
   const send = async () => {
     if (!input.trim()) return;
@@ -412,14 +424,15 @@ function ChatbotPanel() {
 
       setMessages((prev) => [...prev, { role: 'ai', text: data.reply || 'No reply received.' }]);
     } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'ai', text: 'Network Error: Could not reach backend. Try again in a moment.' },
-      ]);
-    } finally {
-      setTyping(false);
-    }
-  };
+  setLastFailedMessage(userMsg);
+  setMessages((prev) => [
+    ...prev,
+    {
+      role: 'ai',
+      text: 'Network/Server issue. Tap Retry to send your last message again.'
+    },
+  ]);
+}
 
   return (
     <div className="flex flex-col h-[400px]">
@@ -458,6 +471,30 @@ function ChatbotPanel() {
           ↑
         </button>
       </div>
+       <div className="flex gap-2 mt-2">
+  {lastFailedMessage && (
+    <button
+      onClick={() => {
+        setInput(lastFailedMessage);
+        setLastFailedMessage('');
+      }}
+      className="btn-ghost text-xs"
+    >
+      Retry last message
+    </button>
+  )}
+
+  <button
+    onClick={() => {
+      const base = [{ role: 'ai', text: "Hi! I'm Sahadeb's AI assistant. Ask me anything! 🤖" }];
+      setMessages(base);
+      localStorage.setItem('chat_messages', JSON.stringify(base));
+    }}
+    className="btn-ghost text-xs"
+  >
+    Clear chat
+  </button>
+</div>
     </div>
   );
 }
