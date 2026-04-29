@@ -11,35 +11,34 @@ const timeline = [
     color: '#6366f1',
   },
   {
-    date: '2024',
+    date: '2025',
     title: 'Prompt Engineering Mastery',
     desc: 'Engineered 50+ specialized prompts for various use cases — content creation, coding assistance, data analysis, and creative generation.',
     icon: '✍️',
     color: '#22d3ee',
   },
   {
-    date: '2024',
+    date: '2025',
     title: 'AI Automation Experiments',
     desc: 'Built automated workflows using n8n, Make.com, Google Apps Script, and Telegram bots. Connected AI APIs to create intelligent pipelines.',
     icon: '⚙️',
     color: '#fb7185',
   },
   {
-    date: '2024',
-    title: 'Portfolio & AI Lab Launch',
-    desc: 'Created this portfolio website with a built-in AI tools laboratory, showcasing projects, skills, and real working AI utilities.',
-    icon: '🚀',
-    color: '#34d399',
-  },
-  {
-    date: '2025',
+    date: '2025-26',
     title: 'Certifications & Courses',
     desc: 'Completed courses in Generative AI, Prompt Engineering, and AI Ethics. Continuously learning and staying updated with the latest AI developments.',
     icon: '🎓',
     color: '#fbbf24',
   },
+  {
+    date: '2026',
+    title: 'Portfolio & AI Lab Launch',
+    desc: 'Created this portfolio website with a built-in AI tools laboratory, showcasing projects, skills, and real working AI utilities.',
+    icon: '🚀',
+    color: '#34d399',
+  },
 ];
-
 export function Experience() {
   return (
     <section id="experience" className="relative py-24 md:py-32">
