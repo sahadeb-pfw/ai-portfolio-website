@@ -15,7 +15,7 @@ const tools = [
   { id: 'prompt-improve', name: 'Prompt Improver', icon: '✨', category: 'Text', color: '#fbbf24', description: 'Enhance and optimize your AI prompts for better results', status: 'free' as const },
   { id: 'summarizer', name: 'Text Summarizer', icon: '📝', category: 'Text', color: '#f59e0b', description: 'Condense long text into concise, clear summaries', status: 'demo' as const },
   { id: 'ocr', name: 'OCR / Image to Text', icon: '🔍', category: 'Extract', color: '#a78bfa', description: 'Extract text from images using optical character recognition', status: 'free' as const },
-  { id: 'resume', name: 'Resume Analyzer', icon: '📄', category: 'Analysis', color: '#8b5cf6', description: 'Get AI-powered feedback on your resume strengths', status: 'demo' as const },
+  { id: 'resume', name: 'Resume Analyzer', icon: '📄', category: 'Analysis', color: '#8b5cf6', description: 'Get AI-powered feedback on your resume strengths', status: 'free' as const },
   { id: 'caption', name: 'Caption Generator', icon: '💡', category: 'Social', color: '#f472b6', description: 'Generate engaging social media captions instantly', status: 'free' as const },
   { id: 'content', name: 'Content Writer', icon: '✍️', category: 'Text', color: '#ec4899', description: 'AI-powered content creation for blogs, emails & more', status: 'demo' as const },
   { id: 'translator', name: 'Translator', icon: '🌐', category: 'Language', color: '#14b8a6', description: 'Translate text between 10+ languages instantly', status: 'free' as const },
