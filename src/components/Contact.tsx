@@ -54,7 +54,7 @@ export default function Contact() {
           <div className="space-y-4">
             {/* Contact Info Cards */}
             {[
-              { icon: '📧', label: 'Email', value: 'hello@sahadeb.dev', sub: 'Response within 24h' },
+              { icon: '📧', label: 'Email', value: 'hello.sahadebpfw@gmail.com', sub: 'Response within 24h' },
               { icon: '📍', label: 'Location', value: 'India', sub: 'Available worldwide' },
               { icon: '💼', label: 'Availability', value: 'Open for projects', sub: 'Freelance & consulting' },
             ].map((info) => (
