@@ -20,7 +20,7 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/env-check", (req, res) => {
   res.json({
-    hasOpenRouterKey: !!process.env.OPENROUTER_API_KEY
+    hasGroqKey: !!process.env.GROQ_API_KEY
   });
 });
 
@@ -28,35 +28,34 @@ app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body || {};
 
-    if (!message || !message.trim()) {
+    if (!message || !String(message).trim()) {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const key = process.env.OPENROUTER_API_KEY;
+    const key = process.env.GROQ_API_KEY;
     if (!key) {
-      return res.status(500).json({ error: "Missing OPENROUTER_API_KEY on server" });
+      return res.status(500).json({ error: "Missing GROQ_API_KEY on server" });
     }
 
-    const orRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://sahadeb-pfw.github.io/ai-portfolio-website/",
-        "X-Title": "AI Portfolio Website"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "qwen/qwen-2.5-7b-instruct:free",
-        messages: [{ role: "user", content: message }]
+        model: "llama-3.1-8b-instant",
+        messages: [{ role: "user", content: message }],
+        temperature: 0.7
       })
     });
 
-    const data = await orRes.json();
+    const data = await groqRes.json();
 
-    if (!orRes.ok) {
-      return res.status(orRes.status).json({
-        error: "OpenRouter API error",
-        details: data?.error?.message || "Unknown OpenRouter error"
+    if (!groqRes.ok) {
+      return res.status(groqRes.status).json({
+        error: "Groq API error",
+        details: data?.error?.message || "Unknown Groq error"
       });
     }
 
