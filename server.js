@@ -5,76 +5,62 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
 
-// Startup env check in logs
-console.log("ENV_CHECK_STARTUP", {
-  hasGeminiApiKey: !!process.env.GEMINI_API_KEY
-});
-
-// Root
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-// Health
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, message: "API is live" });
 });
 
-// Env check (safe: only true/false, no real key output)
 app.get("/api/env-check", (req, res) => {
   res.json({
-    hasGeminiApiKey: !!process.env.GEMINI_API_KEY
+    hasOpenRouterKey: !!process.env.OPENROUTER_API_KEY
   });
 });
 
-// Chat endpoint
 app.post("/api/chat", async (req, res) => {
   try {
-    const message = req.body?.message;
+    const { message } = req.body || {};
 
-    if (!message || !String(message).trim()) {
+    if (!message || !message.trim()) {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const key = process.env.GEMINI_API_KEY;
-
+    const key = process.env.OPENROUTER_API_KEY;
     if (!key) {
-      return res.status(500).json({ error: "Missing GEMINI_API_KEY on server" });
+      return res.status(500).json({ error: "Missing OPENROUTER_API_KEY on server" });
     }
 
-    const url =
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
-    const geminiRes = await fetch(url, {
+    const orRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://sahadeb-pfw.github.io/ai-portfolio-website/",
+        "X-Title": "AI Portfolio Website"
+      },
       body: JSON.stringify({
-        contents: [
-          {
-            parts: [{ text: String(message) }]
-          }
-        ]
+        model: "mistralai/mistral-7b-instruct:free",
+        messages: [{ role: "user", content: message }]
       })
     });
 
-    const data = await geminiRes.json();
+    const data = await orRes.json();
 
-    if (!geminiRes.ok) {
-      return res.status(geminiRes.status).json({
-        error: "Gemini API error",
-        details: data?.error?.message || "Unknown Gemini error"
+    if (!orRes.ok) {
+      return res.status(orRes.status).json({
+        error: "OpenRouter API error",
+        details: data?.error?.message || "Unknown OpenRouter error"
       });
     }
 
-    const reply =
-      data?.candidates?.[0]?.content?.parts?.map((p) => p.text).join(" ") ||
-      "No response generated.";
-
+    const reply = data?.choices?.[0]?.message?.content || "No response generated.";
     return res.json({ reply });
   } catch (err) {
     return res.status(500).json({
