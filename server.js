@@ -46,7 +46,7 @@ app.post("/api/chat", async (req, res) => {
         "X-Title": "AI Portfolio Website"
       },
       body: JSON.stringify({
-        model: "mistralai/mistral-7b-instruct:free",
+        model: "meta-llama/llama-3.1-8b-instruct:free",
         messages: [{ role: "user", content: message }]
       })
     });
