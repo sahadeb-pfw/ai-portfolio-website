@@ -27,8 +27,8 @@ const categories = ['All', ...Array.from(new Set(tools.map(t => t.category)))];
 
 const statusConfig = {
   free: { label: '🟢 Live', bg: 'rgba(52,211,153,0.1)', color: '#34d399' },
-  demo: { label: '🟢 Live', bg: 'rgba(52,211,153,0.1)', color: '#34d399' },
-  beta: { label: '🟢 Live', bg: 'rgba(52,211,153,0.1)', color: '#34d399' },
+  demo: { label: '🕒 Coming Soon', bg: 'rgba(251,191,36,0.1)', color: '#fbbf24' },
+  beta: { label: '🕒 Coming Soon', bg: 'rgba(251,191,36,0.1)', color: '#fbbf24' },
 };
 
 /* ═══════════════════════════════════════════════════════
