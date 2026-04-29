@@ -11,7 +11,7 @@ const tools = [
   { id: 'video-editor', name: 'Video Editor', icon: '🎥', category: 'Edit', color: '#06b6d4', description: 'AI-powered video editing and enhancement tools', status: 'beta' as const },
   { id: 'voice-gen', name: 'Voice Generator', icon: '🔊', category: 'Audio', color: '#fb7185', description: 'Convert text to natural-sounding speech instantly', status: 'free' as const },
   { id: 'speech-text', name: 'Speech to Text', icon: '🎤', category: 'Audio', color: '#f43f5e', description: 'Transcribe spoken words to text in real-time', status: 'free' as const },
-  { id: 'chatbot', name: 'AI Chatbot', icon: '💬', category: 'Chat', color: '#34d399', description: 'Interactive AI assistant for questions and conversations', status: 'demo' as const },
+  { id: 'chatbot', name: 'AI Chatbot', icon: '💬', category: 'Chat', color: '#34d399', description: 'Interactive AI assistant for questions and conversations', status: 'free' as const },
   { id: 'prompt-improve', name: 'Prompt Improver', icon: '✨', category: 'Text', color: '#fbbf24', description: 'Enhance and optimize your AI prompts for better results', status: 'free' as const },
   { id: 'summarizer', name: 'Text Summarizer', icon: '📝', category: 'Text', color: '#f59e0b', description: 'Condense long text into concise, clear summaries', status: 'demo' as const },
   { id: 'ocr', name: 'OCR / Image to Text', icon: '🔍', category: 'Extract', color: '#a78bfa', description: 'Extract text from images using optical character recognition', status: 'free' as const },
@@ -1338,7 +1338,11 @@ export default function AILab() {
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald ai-pulse-dot" />
                   <span className="text-text-muted text-[10px]">
-                    {activeToolData?.status === 'free' ? 'Browser-Powered — No API key required' : 'Live API Mode'}
+                    {activeToolData?.id === 'chatbot'
+  ? 'Live API Mode'
+  : activeToolData?.status === 'free'
+  ? 'Browser-Powered — No API key required'
+  : 'Live API Mode'}
                   </span>
                 </div>
                 <button onClick={closeTool} className="text-text-muted text-[10px] hover:text-text-secondary transition-colors">
