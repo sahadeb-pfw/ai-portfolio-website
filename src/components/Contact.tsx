@@ -193,8 +193,11 @@ const handleSubmit = async (e: React.FormEvent) => {
               )}
             </button>
             {status === 'sent' && (
-              <p className="text-emerald text-xs text-center">Thank you! I'll get back to you soon.</p>
-            )}
+  <p className="text-emerald text-xs text-center">{statusMessage || "Thank you! I'll get back to you soon."}</p>
+)}
+{status === 'error' && (
+  <p className="text-rose text-xs text-center">{statusMessage}</p>
+)}
           </motion.form>
         </div>
       </div>
