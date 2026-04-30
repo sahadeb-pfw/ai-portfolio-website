@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, Send, MessageCircle } from 'lucide-react';
 
 const socials = [
   { name: 'GitHub', icon: Github, href: 'https://github.com/sahadebpratihar', color: '#f1f1f7' },
