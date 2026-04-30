@@ -118,7 +118,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     title={s.name}
                     className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center text-xs font-mono text-text-muted hover:border-accent/30 hover:text-accent-light transition-all"
                   >
-                    <s.icon size={16} />
+                   {s.icon}
                   </a>
                 ))}
               </div>
