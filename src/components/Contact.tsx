@@ -13,17 +13,46 @@ export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    // Simulate form submission — replace with Formspree or EmailJS
-    setTimeout(() => {
-      setStatus('sent');
-      setForm({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setStatus('idle'), 3000);
-    }, 1500);
-  };
+  const [statusMessage, setStatusMessage] = useState('');
+const formEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT as string | undefined;
 
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!formEndpoint) {
+    setStatus('error');
+    setStatusMessage('Form is not connected. Missing VITE_FORMSPREE_ENDPOINT');
+    return;
+  }
+
+  setStatus('sending');
+  setStatusMessage('');
+
+  try {
+    const res = await fetch(formEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        name: form.name,
+        email: form.email,
+        subject: form.subject,
+        message: form.message,
+      }),
+    });
+
+    if (!res.ok) throw new Error('Form submit failed');
+
+    setStatus('sent');
+    setStatusMessage('Thank you! Message sent successfully.');
+    setForm({ name: '', email: '', subject: '', message: '' });
+  } catch {
+    setStatus('error');
+    setStatusMessage('Message not sent. Please try again.');
+  }
+};
   return (
     <section id="contact" className="relative py-24 md:py-32">
       <div className="max-w-6xl mx-auto px-6 md:px-12">
