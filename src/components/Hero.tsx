@@ -261,10 +261,9 @@ export default function Hero() {
               className="flex items-center gap-3 mt-8"
             >
               {[
-                { label: 'GitHub', href: '#', icon: 'GH' },
-                { label: 'LinkedIn', href: '#', icon: 'LI' },
-                { label: 'Twitter', href: '#', icon: 'TW' },
-                { label: 'Email', href: '#', icon: '@' },
+                { label: 'GitHub', href: 'https://github.com/sahadeb-pfw', icon: 'GH' },
+                { label: 'WhatsApp', href: 'https://wa.me/919933376136', icon: 'WA' },
+                { label: 'Email', href: 'mailto:hello.sahadebpfw@gmail.com', icon: '@' },
               ].map((s) => (
                 <a
                   key={s.label}
