@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { Github, Mail, MessageCircle } from 'lucide-react';
 
 /* ── 3D Floating Shapes ── */
 function FloatingShapes() {
@@ -261,19 +262,24 @@ export default function Hero() {
               className="flex items-center gap-3 mt-8"
             >
               {[
-                { label: 'GitHub', href: 'https://github.com/sahadeb-pfw', icon: 'GH' },
-                { label: 'WhatsApp', href: 'https://wa.me/919933376136', icon: 'WA' },
-                { label: 'Email', href: 'mailto:hello.sahadebpfw@gmail.com', icon: '@' },
-              ].map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  title={s.label}
-                  className="w-9 h-9 rounded-lg bg-surface-2 border border-border flex items-center justify-center text-text-muted text-xs font-mono hover:border-accent/30 hover:text-accent-light transition-all"
-                >
-                  {s.icon}
-                </a>
-              ))}
+  { label: 'GitHub', href: 'https://github.com/sahadeb-pfw', icon: Github },
+  { label: 'WhatsApp', href: 'https://wa.me/919933376136', icon: MessageCircle },
+  { label: 'Email', href: 'mailto:hello.sahadebpfw@gmail.com', icon: Mail },
+].map((s) => {
+  const Icon = s.icon;
+  return (
+    <a
+      key={s.label}
+      href={s.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={s.label}
+      className="w-9 h-9 rounded-lg bg-surface-2 border border-border flex items-center justify-center text-text-muted hover:border-accent/30 hover:text-accent-light transition-all"
+    >
+      <Icon size={16} />
+    </a>
+  );
+})}
             </motion.div>
           </div>
 
