@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Github, Linkedin, Twitter, Send, MessageCircle } from 'lucide-react';
 
 const socials = [
   { name: 'GitHub', icon: Github, href: 'https://github.com/sahadebpratihar', color: '#f1f1f7' },
@@ -118,7 +119,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     title={s.name}
                     className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center text-xs font-mono text-text-muted hover:border-accent/30 hover:text-accent-light transition-all"
                   >
-                   {s.icon}
+                   <s.icon size={16} />
                   </a>
                 ))}
               </div>
