@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Twitter, Send, MessageCircle } from 'lucide-react';
 
 const socials = [
-  { name: 'GitHub', icon: Github, href: 'https://github.com/sahadebpratihar', color: '#f1f1f7' },
+  { name: 'GitHub', icon: Github, href: 'https://github.com/sahadeb-pfw', color: '#f1f1f7' },
   { name: 'LinkedIn', icon: Linkedin, href: 'https://linkedin.com/in/sahadebpratihar', color: '#0077b5' },
   { name: 'Twitter', icon: Twitter, href: 'https://twitter.com/sahadebpratihar', color: '#1da1f2' },
   { name: 'Telegram', icon: Send, href: 'https://t.me/YOUR_USERNAME', color: '#0088cc' },
-  { name: 'WhatsApp', icon: MessageCircle, href: 'https://wa.me/91XXXXXXXXXX', color: '#25d366' },
+  { name: 'WhatsApp', icon: MessageCircle, href: 'https://wa.me/919933376136', color: '#25d366' },
 ];
 
 export default function Contact() {
