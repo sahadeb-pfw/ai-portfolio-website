@@ -236,6 +236,78 @@ export function Testimonials() {
           viewport={{ once: true }}
           className="mb-12"
         >
+          {/* Heading label */}
+          <div className="section-label mb-3 flex items-center gap-2">
+            <span className="w-8 h-px bg-accent-light" />
+            Feedback Snapshot
+          </div>
+
+          {/* Main heading */}
+          <h2 className="section-title text-3xl sm:text-4xl lg:text-5xl">
+            Learning feedback
+            <br />
+            <span className="text-gradient">from collaboration</span>
+          </h2>
+
+          {/* Subheading */}
+          <p className="text-text-secondary text-sm mt-4 max-w-2xl">
+            Early feedback collected during my AI learning and project collaboration journey.
+          </p>
+
+          {/* Disclaimer */}
+          <p className="text-text-muted text-[11px] mt-2">
+            Note: These are informal feedback notes and not public profile endorsements.
+          </p>
+        </motion.div>
+
+        <div className="grid sm:grid-cols-3 gap-4">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="gradient-border p-6 rounded-2xl bg-surface"
+            >
+              <div className="flex gap-0.5 mb-4">
+                {Array.from({ length: t.rating }).map((_, si) => (
+                  <span key={si} className="text-amber text-xs">★</span>
+                ))}
+              </div>
+
+              <p className="text-text-secondary text-xs leading-relaxed mb-6 italic">
+                "{t.text}"
+              </p>
+
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
+                  style={{ background: `${t.color}20`, color: t.color }}
+                >
+                  {t.name[0]}
+                </div>
+                <div>
+                  <div className="text-xs font-semibold text-text-primary">{t.name}</div>
+                  <div className="text-[10px] text-text-muted">{t.role}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+  return (
+    <section id="testimonials" className="relative py-24 md:py-32">
+      <div className="max-w-6xl mx-auto px-6 md:px-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12"
+        >
           <div className="section-label mb-3 flex items-center gap-2">
             <span className="w-8 h-px bg-accent-light" />
             Testimonials
