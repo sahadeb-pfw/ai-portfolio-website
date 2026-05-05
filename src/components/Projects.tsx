@@ -12,6 +12,10 @@ const projects = [
     icon: '🌐',
     color: '#6366f1',
     features: ['3D animations', 'AI Lab section', 'Responsive design', 'Glassmorphism UI'],
+    demoUrl: 'https://sahadeb-pfw.github.io/ai-portfolio-website/',
+    githubUrl: 'https://github.com/sahadeb-pfw/ai-portfolio-website',
+    isLive: true,
+    isGithubReady: true,
   },
   {
     title: 'AI Automation Agent',
@@ -21,6 +25,10 @@ const projects = [
     icon: '🤖',
     color: '#22d3ee',
     features: ['Task automation', 'Smart scheduling', 'API integration', 'Notifications'],
+    demoUrl: '#',
+    githubUrl: '#',
+    isLive: true,
+    isGithubReady: true,
   },
   {
     title: 'AI Prompt Library',
@@ -30,6 +38,10 @@ const projects = [
     icon: '📚',
     color: '#fb7185',
     features: ['100+ prompts', 'Categorized', 'Copy-paste ready', 'Regular updates'],
+    demoUrl: '#',
+    githubUrl: '#',
+    isLive: false,
+    isGithubReady: false,
   },
   {
     title: 'AI Content Generator',
@@ -39,6 +51,10 @@ const projects = [
     icon: '✍️',
     color: '#34d399',
     features: ['Multi-model', 'Batch generation', 'Templates', 'Export options'],
+    demoUrl: '#',
+    githubUrl: '#',
+    isLive: false,
+    isGithubReady: false,
   },
   {
     title: 'AI Image Generation Gallery',
@@ -48,6 +64,10 @@ const projects = [
     icon: '🎨',
     color: '#fbbf24',
     features: ['Multiple styles', 'High quality', 'Style transfer', 'Gallery view'],
+    demoUrl: '#',
+    githubUrl: '#',
+    isLive: false,
+    isGithubReady: false,
   },
   {
     title: 'Telegram AI Task Assistant',
@@ -57,6 +77,10 @@ const projects = [
     icon: '💬',
     color: '#818cf8',
     features: ['Chat interface', 'Task management', 'Smart replies', 'Reminders'],
+    demoUrl: '#',
+    githubUrl: '#',
+    isLive: false,
+    isGithubReady: false,
   },
 ];
 
