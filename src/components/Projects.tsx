@@ -202,15 +202,40 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {/* Actions */}
-                  <div className="flex gap-2 pt-2 border-t border-border">
-                    <button className="btn-ghost text-[11px] flex-1 justify-center hover:text-accent-light">
-                      Live Demo →
-                    </button>
-                    <button className="btn-ghost text-[11px] flex-1 justify-center hover:text-accent-light">
-                      GitHub ↗
-                    </button>
-                  </div>
+                 {/* Actions */}
+<div className="flex gap-2 pt-2 border-t border-border">
+
+  {project.isLive && project.demoUrl !== '#' ? (
+    <a
+      href={project.demoUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn-ghost text-[11px] flex-1 justify-center hover:text-accent-light"
+    >
+      Live Demo →
+    </a>
+  ) : (
+    <span className="btn-ghost text-[11px] flex-1 justify-center text-text-muted/40 cursor-not-allowed select-none">
+      🚧 Coming Soon
+    </span>
+  )}
+
+  {project.isGithubReady && project.githubUrl !== '#' ? (
+    <a
+      href={project.githubUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn-ghost text-[11px] flex-1 justify-center hover:text-accent-light"
+    >
+      GitHub ↗
+    </a>
+  ) : (
+    <span className="btn-ghost text-[11px] flex-1 justify-center text-text-muted/40 cursor-not-allowed select-none">
+      🔒 Private
+    </span>
+  )}
+
+</div>
                 </div>
               </motion.div>
             ))}
